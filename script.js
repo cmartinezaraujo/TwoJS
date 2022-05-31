@@ -11,24 +11,29 @@ let nextGenCells = [...Array(50)].map(e => Array(50));
 let params = {
   width: 1000,
   height: 1000
-};
+}; 
 
 // `new` instantiation Two.js
 const two = new Two(params);
 // append to `container`
 two.appendTo(container);
-ngle(30, 10, 20, 20);
 // shape.fill = "black";
 
+let aliveColor = "rgb(255, 0, 0)";
+let deadColor = "white";
+let generation = 0;
 
 const initializeGrid = (cells, shapes) => {
     for(let i = 0; i < 50; i++) {
         for(let j = 0; j < 50; j++) {
             let shape = two.makeRectangle(i * 20 + 10, j * 20 + 10, 20, 20);
-            shape.fill = "white";
+            shape.fill = deadColor;
             // shape.stroke = "black";
             let cell = {
-                alive : false
+                alive : false,
+                generation : 0,
+                survives: 0,
+                deaths: 0
             }
             cells[i][j] = cell;
             shapes[i][j] = shape;
@@ -41,7 +46,8 @@ const initializeLife = (cells, shapes) => {
         let x = Math.floor(Math.random() * 50);
         let y = Math.floor(Math.random() * 50);
         cells[x][y].alive = true;
-        shapes[x][y].fill = "black";
+        cells[x][y].generation++;
+        shapes[x][y].fill = aliveColor;
     }
 
 }
@@ -71,10 +77,13 @@ const nextGeneration = (currentGen, nextGen) => {
             if(currentGen[i][j].alive) {
                 if(sum < 2 || sum > 3) {
                     nextGen[i][j].alive = false;
+                    nextGen[i][j].deaths+=2;
                 }
+                nextGen[i][j].survives++;
             }else{
                 if(sum == 3) {
                     nextGen[i][j].alive = true;
+                    nextGen[i][j].generation++;
                 }
             }
         }
@@ -82,15 +91,27 @@ const nextGeneration = (currentGen, nextGen) => {
 }
 
 const updateShapes = (cells, shapes) => {
+    let colorSample;
     for(let i = 0; i < 50; i++) {
         for(let j = 0; j < 50; j++) {
             if(cells[i][j].alive) {
-                shapes[i][j].fill = "black";
+
+                //TODO: Limit the number of generations and reset after that
+
+                let r = cells[i][j].generation % 255;
+                let g = cells[i][j].survives % 255;
+                let b = cells[i][j].deaths % 255;
+
+
+                let color = `rgb(${r}, ${g}, ${b})`;
+                colorSample = color;
+                shapes[i][j].fill = color;
             }else{
-                shapes[i][j].fill = "white";
+                shapes[i][j].fill = deadColor;
             }
         }
     }
+    console.log(colorSample);
 }
 
 
@@ -102,6 +123,7 @@ nextGenCells = Array.from(lastGenCells);
 
 setInterval(function(){ 
     nextGeneration(lastGenCells, nextGenCells);
+    generation++;
     let temp = Array.from(lastGenCells);
     lastGenCells = Array.from(nextGenCells);
     nextGenCells = Array.from(temp);
