@@ -18,9 +18,8 @@ const two = new Two(params);
 two.appendTo(container);
 
 
-let aliveColor = "rgb(255, 0, 0)";
-let deadColor = "hsla(255, 78%, 92%, 1)";
-//let hue = Math.floor(Math.random() * 300);
+let aliveColor = "hsl(255, 0%, 0%)";
+let deadColor = "hsl(255, 100%, 100%)";
 let generation = 0;
 const generationLimit = 300;
 
@@ -100,16 +99,10 @@ const nextGeneration = (currentGen, nextGen) => {
 }
 
 const updateShapes = (cells, shapes) => {
-    let colorSample;
     for(let i = 0; i < 50; i++) {
         for(let j = 0; j < 50; j++) {
             if(cells[i][j].alive) {
-
-                //TODO: Limit the number of generations and reset after that
-
                 let s = Math.floor(cells[i][j].survives/((generationLimit/100) + 1));
-
-
                 let color = `hsl(${cells[i][j].hue}, ${s}%, 50%)`;
                 colorSample = color;
                 shapes[i][j].fill = color;
@@ -118,7 +111,6 @@ const updateShapes = (cells, shapes) => {
             }
         }
     }
-    //console.log(colorSample);
 }
 
 const generateHue = () => {
@@ -145,16 +137,10 @@ setInterval(function(){
         initializeGrid(lastGenCells, shapes);
         initializeLife(lastGenCells, shapes);
         nextGenCells = Array.from(lastGenCells);
-        //hue = generateHue();
     }
     console.log(generation);
 
 }, 100);
-
-
-
-
-
 
 two.play();
 
