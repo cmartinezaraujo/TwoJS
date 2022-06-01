@@ -81,7 +81,7 @@ const nextGeneration = (currentGen, nextGen) => {
             if(currentGen[i][j].alive) {
                 if(sum < 2 || sum > 3) {
                     nextGen[i][j].alive = false;
-                    nextGen[i][j].deaths+=2;
+                    nextGen[i][j].deaths+=1;
                     changes++;
                 }
                 nextGen[i][j].survives++;
