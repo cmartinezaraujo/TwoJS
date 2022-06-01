@@ -6,10 +6,11 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    background: rgb(21, 21, 30);
   }
   
   /* diagnostic styling */
   section {
-    background: lightgray;
+    background: rgb(21, 21, 30);
   }
   
