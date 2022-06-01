@@ -138,7 +138,7 @@ setInterval(function(){
         initializeLife(lastGenCells, shapes);
         nextGenCells = Array.from(lastGenCells);
     }
-    console.log(generation);
+    // console.log(generation);
 
 }, 100);
 
